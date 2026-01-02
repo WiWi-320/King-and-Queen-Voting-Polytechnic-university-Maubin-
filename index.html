@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polytechnic University - King & Queen Election</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animation Overlay -->
+    <div class="animation-overlay" id="animationOverlay">
+        <div class="welcome-box" id="welcomeBox">
+            <div class="emoji">🎓</div>
+            <div class="message">Polytechnic University<br>Annual King & Queen Election</div>
+        </div>
+        
+        <div class="voting-box" id="votingBox">
+            <div class="emoji">👑</div>
+            <div class="message">Cast Your Vote<br>For Your Favorite<br>King & Queen</div>
+        </div>
+    </div>
+
+    <!-- Main Voting Interface -->
+    <div class="container" id="mainContent" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>Polytechnic University</h1>
+                <p class="subtitle">King & Queen Election 2024</p>
+            </div>
+            
+            <div class="header-controls">
+                <!-- Voting Timer -->
+                <div class="voting-info">
+                    <div class="voting-status" id="votingStatus">
+                        <span class="status-indicator active"></span>
+                        <span class="status-text">Voting Active</span>
+                    </div>
+                    <div class="timer" id="countdownTimer">
+                        <span class="timer-label">Ends:</span>
+                        <span class="time" id="timerDisplay">December 31, 2024 23:59</span>
+                    </div>
+                </div>
+                
+                <!-- Admin Access Link -->
+                <div class="admin-access">
+                    <a href="admin.html" class="admin-link" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7 7 7 0 0 1 7 7 3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0 7 7 0 0 1-7 7 3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7 7 7 0 0 1-7-7z"/>
+                        </svg>
+                        Admin Panel
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Election Info Banner -->
+            <div class="election-banner">
+                <div class="banner-content">
+                    <h2>🏆 Annual King & Queen Election</h2>
+                    <p>Your vote matters! Choose the student leaders who will represent our university.</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="totalVoters">0</span>
+                        <span class="stat-label">Voters</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalVotes">0</span>
+                        <span class="stat-label">Total Votes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voting Sections -->
+            <div class="voting-sections">
+                <!-- King Candidates Section -->
+                <section class="voting-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="crown-icon">👑</span>
+                            King Candidates
+                        </h2>
+                        <div class="section-info">
+                            <span class="candidate-count" id="kingCount">0</span> Candidates
+                        </div>
+                    </div>
+                    
+                    <div class="candidates-grid" id="kingCandidates">
+                        <!-- King candidates will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Queen Candidates Section -->
+                <section class="voting-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="crown-icon">👸</span>
+                            Queen Candidates
+                        </h2>
+                        <div class="section-info">
+                            <span class="candidate-count" id="queenCount">0</span> Candidates
+                        </div>
+                    </div>
+                    
+                    <div class="candidates-grid" id="queenCandidates">
+                        <!-- Queen candidates will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Voting Rules -->
+            <section class="rules-section">
+                <div class="rules-card">
+                    <h3>📜 Voting Rules & Regulations</h3>
+                    <div class="rules-list">
+                        <div class="rule-item">
+                            <span class="rule-number">1</span>
+                            <p>Each registered student can vote <strong>only once</strong> during the election period.</p>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">2</span>
+                            <p>You must vote for <strong>one King</strong> and <strong>one Queen</strong> candidate.</p>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">3</span>
+                            <p>Once submitted, your vote <strong>cannot be changed or revoked</strong>.</p>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-number">4</span>
+                            <p>Voting period is determined by the Election Committee.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Preview -->
+            <section class="results-preview" id="resultsPreview">
+                <div class="preview-header">
+                    <h3>📊 Current Standings</h3>
+                    <button class="refresh-btn" onclick="loadResultsPreview()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+                
+                <div class="results-container">
+                    <div class="king-results">
+                        <h4>👑 Top King Candidates</h4>
+                        <div class="results-list" id="kingResults">
+                            <!-- King results will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="queen-results">
+                        <h4>👸 Top Queen Candidates</h4>
+                        <div class="results-list" id="queenResults">
+                            <!-- Queen results will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Polytechnic University</h4>
+                    <p>Student Council Election System</p>
+                    <p class="election-period" id="electionPeriod">Election Period: December 1-31, 2024</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h5>Quick Links</h5>
+                        <a href="admin.html" target="_blank">Admin Panel</a>
+                        <a href="#" onclick="viewRules()">Election Rules</a>
+                        <a href="#" onclick="viewResults()">View Results</a>
+                    </div>
+                    
+                    <div class="link-group">
+                        <h5>Contact</h5>
+                        <a href="mailto:election@polytechnic.edu">election@polytechnic.edu</a>
+                        <a href="tel:+95123456789">+95 123 456 789</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 Polytechnic University. All rights reserved.</p>
+                <p class="system-info">Election System v2.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Vote Confirmation Modal -->
+    <div class="modal-overlay" id="voteModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Confirm Your Vote</h3>
+                <button class="close-btn" onclick="closeVoteModal()">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="vote-confirmation">
+                    <div class="confirmation-icon">✓</div>
+                    <h4>Final Confirmation</h4>
+                    <p>You are about to cast your vote for:</p>
+                    
+                    <div class="candidate-selection" id="confirmSelection">
+                        <!-- Candidate info will be inserted here -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <p><strong>Important Notice:</strong></p>
+                            <ul>
+                                <li>This is your <strong>final decision</strong></li>
+                                <li>Votes <strong>cannot be changed</strong> after submission</li>
+                                <li>You can vote <strong>only once</strong></li>
+                                <li>Ensure you have selected both King and Queen</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeVoteModal()">Review Again</button>
+                <button class="btn btn-primary" onclick="submitVote()" id="submitVoteBtn">Cast My Vote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Already Voted Modal -->
+    <div class="modal-overlay" id="votedModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Vote Submitted</h3>
+                <button class="close-btn" onclick="closeVotedModal()">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="vote-success">
+                    <div class="success-icon">🎉</div>
+                    <h4>Thank You for Voting!</h4>
+                    <p>Your vote has been successfully recorded.</p>
+                    
+                    <div class="voted-details" id="votedDetails">
+                        <!-- Voting details will be inserted here -->
+                    </div>
+                    
+                    <div class="success-message">
+                        <p>You have fulfilled your duty as a student of Polytechnic University.</p>
+                        <p>Election results will be announced after the voting period ends.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeVotedModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="modal-overlay" id="resultsModal" style="display: none;">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <h3>Election Results</h3>
+                <button class="close-btn" onclick="closeResultsModal()">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="results-full">
+                    <!-- Full results will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Polytechnic University</title>
+    <link rel="stylesheet" href="adminstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Polytechnic University</h1>
+                </div>
+                <p class="subtitle">King & Queen Election Admin Panel</p>
+            </div>
+            
+            <div class="login-box">
+                <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                
+                <div class="input-group">
+                    <label for="adminUser">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input type="text" id="adminUser" placeholder="Enter username">
+                </div>
+                
+                <div class="input-group">
+                    <label for="adminPass">
+                        <i class="fas fa-key"></i> Password
+                    </label>
+                    <input type="password" id="adminPass" placeholder="Enter password">
+                </div>
+                
+                <button class="login-btn" onclick="adminLogin()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                
+                <div class="login-note">
+                    <p><strong>Default Admin:</strong></p>
+                    <p>Username: <code>haylinnhtoo</code></p>
+                    <p>Password: <code>16122005</code></p>
+                </div>
+                
+                <div class="error-msg" id="loginError"></div>
+            </div>
+            
+            <div class="login-footer">
+                <a href="index.html">
+                    <i class="fas fa-external-link-alt"></i> Go to Voting Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+        <!-- Top Navigation -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <h1><i class="fas fa-crown"></i> Election Admin</h1>
+                    <p>Polytechnic University</p>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="admin-details">
+                        <span id="currentAdmin">Administrator</span>
+                        <span>System Admin</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Sidebar -->
+            <nav class="admin-sidebar" id="sidebar">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="#" onclick="showSection('dashboard')" class="active">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('candidates')">
+                            <i class="fas fa-users"></i>
+                            <span>Candidates</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('photos')">
+                            <i class="fas fa-camera"></i>
+                            <span>Photo Upload</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('settings')">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <div class="system-status">
+                        <div class="status-item">
+                            <span class="status-dot active"></span>
+                            <span>System: <strong>Online</strong></span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot" id="voteStatusDot"></span>
+                            <span>Voting: <strong id="voteStatusText">Active</strong></span>
+                        </div>
+                    </div>
+                    <a href="index.html" target="_blank" class="view-site">
+                        <i class="fas fa-external-link-alt"></i> View Site
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="admin-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                        <p>Election Overview & Statistics</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon king">
+                                <i class="fas fa-king"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>King Candidates</h3>
+                                <p class="stat-number" id="kingCount">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon queen">
+                                <i class="fas fa-queen"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Queen Candidates</h3>
+                                <p class="stat-number" id="queenCount">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon vote">
+                                <i class="fas fa-vote-yea"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Total Votes</h3>
+                                <p class="stat-number" id="totalVotes">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon status">
+                                <i class="fas fa-power-off"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Voting Status</h3>
+                                <p class="stat-status" id="votingStatus">Active</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        <div class="actions-grid">
+                            <button class="action-btn" onclick="showSection('candidates')">
+                                <i class="fas fa-user-plus"></i>
+                                Add Candidate
+                            </button>
+                            <button class="action-btn" onclick="showSection('photos')">
+                                <i class="fas fa-camera"></i>
+                                Upload Photos
+                            </button>
+                            <button class="action-btn" onclick="toggleVoting()" id="toggleVoteBtn">
+                                <i class="fas fa-pause"></i>
+                                Pause Voting
+                            </button>
+                            <button class="action-btn" onclick="exportData()">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Candidates Section -->
+                <section id="candidates" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Manage Candidates</h2>
+                        <p>Add, edit, and delete King & Queen candidates</p>
+                    </div>
+                    
+                    <div class="candidate-management">
+                        <div class="add-candidate">
+                            <h3><i class="fas fa-user-plus"></i> Add New Candidate</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="canName">
+                                        <i class="fas fa-user"></i> Full Name
+                                    </label>
+                                    <input type="text" id="canName" placeholder="Candidate name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="canDepartment">
+                                        <i class="fas fa-graduation-cap"></i> Department
+                                    </label>
+                                    <input type="text" id="canDepartment" placeholder="Department">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="canCategory">
+                                        <i class="fas fa-crown"></i> Category
+                                    </label>
+                                    <select id="canCategory">
+                                        <option value="king">👑 King</option>
+                                        <option value="queen">👸 Queen</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="canStudentId">
+                                        <i class="fas fa-id-card"></i> Student ID
+                                    </label>
+                                    <input type="text" id="canStudentId" placeholder="Student ID">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="canBio">
+                                    <i class="fas fa-file-alt"></i> Biography
+                                </label>
+                                <textarea id="canBio" placeholder="Short biography..."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button class="btn-primary" onclick="addCandidate()">
+                                    <i class="fas fa-save"></i> Add Candidate
+                                </button>
+                                <button class="btn-secondary" onclick="clearForm()">
+                                    <i class="fas fa-times"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="candidate-list">
+                            <div class="list-header">
+                                <h3><i class="fas fa-list"></i> Current Candidates</h3>
+                                <div class="list-controls">
+                                    <select id="filterCategory" onchange="filterCandidates()">
+                                        <option value="all">All Candidates</option>
+                                        <option value="king">King Only</option>
+                                        <option value="queen">Queen Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="candidates-container" id="candidatesList">
+                                <!-- Candidates will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photo Upload Section -->
+                <section id="photos" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-camera"></i> Photo Management</h2>
+                        <p>Upload candidate photos from your phone or computer</p>
+                    </div>
+                    
+                    <div class="photo-management">
+                        <!-- Upload Area -->
+                        <div class="upload-section">
+                            <div class="upload-box" id="uploadBox">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h3>Upload Candidate Photo</h3>
+                                <p>Drag & drop or click to select from phone/computer</p>
+                                <p class="upload-note">Supports: JPG, PNG, GIF (Max: 5MB)</p>
+                                <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                                <button class="upload-btn" onclick="document.getElementById('photoInput').click()">
+                                    <i class="fas fa-folder-open"></i> Choose Photo
+                                </button>
+                            </div>
+                            
+                            <div class="photo-preview" id="photoPreview" style="display: none;">
+                                <div class="preview-header">
+                                    <h4><i class="fas fa-eye"></i> Preview</h4>
+                                    <button class="close-preview" onclick="clearPreview()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="preview-content">
+                                    <img id="previewImg" src="" alt="Preview">
+                                    <div class="preview-info">
+                                        <p><strong>File:</strong> <span id="fileName"></span></p>
+                                        <p><strong>Size:</strong> <span id="fileSize"></span></p>
+                                        <p><strong>Type:</strong> <span id="fileType"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Select Candidate -->
+                        <div class="candidate-select">
+                            <h3><i class="fas fa-user-tag"></i> Select Candidate</h3>
+                            <p>Choose which candidate this photo belongs to:</p>
+                            
+                            <div class="candidate-grid" id="candidateGrid">
+                                <!-- Candidates for photo selection -->
+                            </div>
+                            
+                            <div class="selected-candidate" id="selectedCandidate" style="display: none;">
+                                <div class="selected-info">
+                                    <img id="selectedPhoto" src="" alt="">
+                                    <div>
+                                        <h4 id="selectedName"></h4>
+                                        <p id="selectedCategory"></p>
+                                        <p id="selectedDept"></p>
+                                    </div>
+                                </div>
+                                <button class="btn-primary" onclick="uploadPhoto()" id="uploadPhotoBtn" disabled>
+                                    <i class="fas fa-upload"></i> Upload Photo
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Photos -->
+                        <div class="current-photos">
+                            <h3><i class="fas fa-images"></i> Current Photos</h3>
+                            <div class="photos-grid" id="photosGrid">
+                                <!-- Current candidate photos -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> System Settings</h2>
+                        <p>Configure election and system preferences</p>
+                    </div>
+                    
+                    <div class="settings-container">
+                        <div class="settings-card">
+                            <h3><i class="fas fa-calendar-alt"></i> Election Schedule</h3>
+                            
+                            <div class="form-group">
+                                <label for="electionTitle">
+                                    <i class="fas fa-heading"></i> Election Title
+                                </label>
+                                <input type="text" id="electionTitle" placeholder="Election title">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="startDate">
+                                        <i class="fas fa-play-circle"></i> Start Date
+                                    </label>
+                                    <input type="datetime-local" id="startDate">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="endDate">
+                                        <i class="fas fa-stop-circle"></i> End Date
+                                    </label>
+                                    <input type="datetime-local" id="endDate">
+                                </div>
+                            </div>
+                            
+                            <button class="btn-primary" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                            
+                            <div class="form-group">
+                                <label for="deletePasskey">
+                                    <i class="fas fa-key"></i> Delete Passkey
+                                </label>
+                                <div class="passkey-input">
+                                    <input type="password" id="deletePasskey" value="confirm12345">
+                                    <button class="show-btn" onclick="togglePasskey()">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small>Required for deleting photos</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Change Passkey</label>
+                                <input type="password" id="newPasskey" placeholder="New passkey">
+                                <input type="password" id="confirmPasskey" placeholder="Confirm passkey">
+                                <button class="btn-secondary" onclick="changePasskey()">
+                                    <i class="fas fa-key"></i> Change
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3><i class="fas fa-tools"></i> System Tools</h3>
+                            
+                            <div class="tool-buttons">
+                                <button class="tool-btn" onclick="backupData()">
+                                    <i class="fas fa-database"></i> Backup Data
+                                </button>
+                                <button class="tool-btn" onclick="resetVotes()">
+                                    <i class="fas fa-redo"></i> Reset Votes
+                                </button>
+                                <button class="tool-btn danger" onclick="clearAllData()">
+                                    <i class="fas fa-trash"></i> Clear All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="deleteModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-trash"></i> Delete Candidate</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this candidate?</p>
+                <p class="warning"><i class="fas fa-exclamation-triangle"></i> This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="successModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header success">
+                <h3><i class="fas fa-check-circle"></i> Success!</h3>
+                <button class="close-modal" onclick="closeSuccessModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="successMessage">Operation completed successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeSuccessModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+</body>
+</html>
